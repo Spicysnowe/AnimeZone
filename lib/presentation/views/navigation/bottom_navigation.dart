@@ -8,10 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final List<Widget> widgetOptions = [
-  Home(), // You might need to adjust this based on your app's logic
-
-  Search(),
-  Profile()
+  const Home(),
+  const Search(),
+  const Profile()
 ];
 
 class BottomNavigation extends ConsumerWidget {
@@ -20,73 +19,55 @@ class BottomNavigation extends ConsumerWidget {
     final currentIndex = ref.watch(bottomNavigationProvider);
 
     return Scaffold(
-          backgroundColor: black1,
-          body: Column(
-            children: [
-              Expanded(
-                flex: 9,
-                child: Center(
-                  child: widgetOptions.elementAt(currentIndex),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child:  Row(
+      backgroundColor: black1,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 9,
+            child: Center(
+              child: widgetOptions.elementAt(currentIndex),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 NavButton(
                   onTap: () => ref
                       .read(bottomNavigationProvider.notifier)
                       .changeIndex(0),
-                  icondata: Icons.home,
+                  iconDataActive: Icons.home,
+                  iconDataInActive: Icons.home_outlined,
                   index: 0,
-                  currentIndex: currentIndex, // Pass the current index
+                  currentIndex: currentIndex, 
                 ),
                 NavButton(
                   onTap: () => ref
                       .read(bottomNavigationProvider.notifier)
                       .changeIndex(1),
-                  icondata: Icons.search,
+                  iconDataActive: Icons.search,
+                  iconDataInActive: Icons.search_off,
                   index: 1,
-                  currentIndex: currentIndex, // Pass the current index
+                  currentIndex: currentIndex, 
                 ),
                 NavButton(
                   onTap: () => ref
                       .read(bottomNavigationProvider.notifier)
                       .changeIndex(2),
-                  icondata: Icons.person,
+                  iconDataActive: Icons.person,
+                  iconDataInActive: Icons.person_outline,
                   index: 2,
-                  currentIndex: currentIndex, // Pass the current index
+                  currentIndex: currentIndex, 
                 )
               ],
             ),
-              )
-            ],
-          ),
-           );
+          )
+        ],
+      ),
+    );
   }
 }
 
 
 
-// BottomNavigationBar(
-//           backgroundColor: black1,
-//           currentIndex: currentIndex,
-//           onTap: (index) => ref.read(bottomNavigationProvider.notifier).changeIndex(index),
-//           items: const [
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.home),
-//               label: '',
-//             ),
-//              BottomNavigationBarItem(
-//               icon: Icon(Icons.search),
-//               label: '',
-//             ),
-
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.person),
-//               label: '',
-//             ),
-//             // Add other items here
-//           ],
-//         ),

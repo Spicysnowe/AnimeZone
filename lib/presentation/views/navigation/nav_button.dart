@@ -1,25 +1,27 @@
+import 'package:anime_zone/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class NavButton extends StatelessWidget {
   const NavButton({
     super.key,
     this.onTap,
-    this.icondata,
+    this.iconDataActive,
     required this.index,
-    required this.currentIndex, // Add this
+    required this.currentIndex, this.iconDataInActive, // Add this
   });
   final void Function()? onTap;
   final int index;
   final int currentIndex; // Add this
-  final IconData? icondata;
+  final IconData? iconDataActive;
+  final IconData? iconDataInActive;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Icon(
-        icondata,
-        color: index == currentIndex ? Colors.white : Colors.grey,
+        index == currentIndex ? iconDataActive: iconDataInActive,
+        color: grey
       ),
     );
   }

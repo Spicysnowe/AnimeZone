@@ -17,11 +17,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Column(
           children: [
-            Expanded(flex: 5, child: Container()),
+            Expanded(flex: 47, child: Container()),
             Expanded(
-                flex: 5,
+                flex: 53,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
