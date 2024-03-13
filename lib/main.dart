@@ -1,29 +1,40 @@
+import 'package:anime_zone/presentation/views/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:anime_zone/presentation/views/navigation/home.dart';
 import 'graphql_client.dart';
 import 'queries.dart';
 
 void main() {
   final client = clientFor(uri: 'https://graphql.anilist.co');
-  runApp(MyApp(client: client!));
+  
+  // Wrap your MyApp widget with ProviderScope for Riverpod
+  runApp(
+    ProviderScope(
+      child: MyApp(client: client!),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final ValueNotifier<GraphQLClient> client;
+
   MyApp({required this.client});
+
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: client,
-      child: CacheProvider(
+      child:  CacheProvider(
         child: MaterialApp(
-          title: 'GraphQL Flutter',
-          home: CharacterListScreen(),
+          home: BottomNavigation(),
         ),
       ),
     );
   }
 }
+
 
 class HomePage extends StatelessWidget {
   @override
