@@ -1,5 +1,4 @@
 import 'package:anime_zone/core/constants/colors.dart';
-import 'package:anime_zone/core/utils/scaling.dart';
 import 'package:anime_zone/presentation/state/bottom_navigation_state.dart';
 import 'package:anime_zone/presentation/views/navigation/home.dart';
 import 'package:anime_zone/presentation/views/navigation/nav_button.dart';
@@ -17,7 +16,7 @@ class BottomNavigation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(bottomNavigationProvider);
-
+   //TODO: Add will popscope
     return Scaffold(
       backgroundColor: black1,
       body: Column(
@@ -40,7 +39,7 @@ class BottomNavigation extends ConsumerWidget {
                   iconDataActive: Icons.home,
                   iconDataInActive: Icons.home_outlined,
                   index: 0,
-                  currentIndex: currentIndex, 
+                  currentIndex: currentIndex,
                 ),
                 NavButton(
                   onTap: () => ref
@@ -49,7 +48,7 @@ class BottomNavigation extends ConsumerWidget {
                   iconDataActive: Icons.search,
                   iconDataInActive: Icons.search_off,
                   index: 1,
-                  currentIndex: currentIndex, 
+                  currentIndex: currentIndex,
                 ),
                 NavButton(
                   onTap: () => ref
@@ -58,7 +57,7 @@ class BottomNavigation extends ConsumerWidget {
                   iconDataActive: Icons.person,
                   iconDataInActive: Icons.person_outline,
                   index: 2,
-                  currentIndex: currentIndex, 
+                  currentIndex: currentIndex,
                 )
               ],
             ),
@@ -68,6 +67,3 @@ class BottomNavigation extends ConsumerWidget {
     );
   }
 }
-
-
-

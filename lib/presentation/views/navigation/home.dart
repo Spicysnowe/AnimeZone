@@ -5,6 +5,7 @@ import 'package:anime_zone/data/data_sources/remote/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+//TODO: Modularize the code
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -84,8 +85,7 @@ class _HomeState extends State<Home> {
                         return const CircularProgressIndicator();
                       }
 
-                      // Parse and use your data as needed
-                      // return Text(character['name']['full'] ?? 'No Title');
+                     
                       List recommendations =
                           result.data?['Page']['recommendations'] ?? [];
 
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
                                         top: scaleHeight(6, context),
                                         bottom: scaleHeight(2, context)),
                                     child: Text(
-                                      title ?? 'No Title',
+                                      title ,
                                       style: GoogleFonts.getFont(fontFamily1,
                                           color: Colors.white,
                                           fontSize: scaleHeight(8, context)),

@@ -7,11 +7,11 @@ class NavButton extends StatelessWidget {
     this.onTap,
     this.iconDataActive,
     required this.index,
-    required this.currentIndex, this.iconDataInActive, // Add this
+    required this.currentIndex, this.iconDataInActive,
   });
   final void Function()? onTap;
   final int index;
-  final int currentIndex; // Add this
+  final int currentIndex; 
   final IconData? iconDataActive;
   final IconData? iconDataInActive;
 
