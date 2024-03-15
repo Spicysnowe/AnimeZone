@@ -152,7 +152,7 @@ class SignIn extends ConsumerWidget {
                         .then((value) {
 
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/details',
+                              '/navigation',
                               (Route<dynamic> route) => false,
                             );
                           

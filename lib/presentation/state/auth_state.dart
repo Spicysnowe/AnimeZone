@@ -35,46 +35,40 @@ class AuthProvider extends ChangeNotifier {
     setLoader(true);
     _userCredential = await fauth.signupUserWithFirebase(email, password, name);
     final data = {
-      'email': email,
-      'password': password,
       'uid': _userCredential!.user!.uid,
       'createdAt': DateTime.now().millisecondsSinceEpoch.toString(),
-      'name': name,
-      'bio': '',
-      'profilePic': '',
-      'batches': []
+      'email': email,
+      // 'password': password,
+
+      'name': '',
+      'username': '',
+      'dateOfBirth': '',
+      'gender': ''
     };
     String uid = _userCredential!.user!.uid;
-    isSuccess= await addUserToDatabase(data, 'users', uid);
-    if(isSuccess){
+    isSuccess = await addUserToDatabase(data, 'users', uid);
+    if (isSuccess) {
       return _userCredential!;
-    }else{
+    } else {
       throw Exception("Error to sign up the user");
     }
-
-    
   }
 
   Future<bool> addUserToDatabase(
-       Map<String, dynamic> data,  String collectionName, String docName) async {
-    
-    var value= false;
-    try{
-    
-    await fstore.addDataToFirestore(data, collectionName, docName);
-      value=true;
-
-    
-    }catch(e){
+      Map<String, dynamic> data, String collectionName, String docName) async {
+    var value = false;
+    try {
+      await fstore.addDataToFirestore(data, collectionName, docName);
+      value = true;
+    } catch (e) {
       print(e);
 
-      value=false;
+      value = false;
     }
     return value;
-    
   }
 
-  void logoutUser(){
+  void logoutUser() {
     fauth.signOutUser();
   }
 
@@ -85,4 +79,5 @@ class AuthProvider extends ChangeNotifier {
   }
 }
 
-final authProvider= ChangeNotifierProvider<AuthProvider>((ref) => AuthProvider());
+final authProvider =
+    ChangeNotifierProvider<AuthProvider>((ref) => AuthProvider());
