@@ -1,17 +1,33 @@
+import 'package:anime_zone/core/constants/fontFamily.dart';
+import 'package:anime_zone/core/utils/scaling.dart';
+import 'package:anime_zone/presentation/state/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-
-class Profile extends StatefulWidget {
+class Profile extends ConsumerWidget {
   const Profile({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authNotifier = ref.watch(authProvider);
+    return InkWell(
+        onTap: () {
+          authNotifier.logoutUser();
 
-class _ProfileState extends State<Profile> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Profile', style: TextStyle(color: Colors.white),));
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/signup',
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Text(
+          "Logout",
+          style: GoogleFonts.getFont(fontFamily1,
+              fontSize: scaleHeight(12, context),
+              fontWeight: FontWeight.w400,
+              height: 1.25,
+              color: Colors.white),
+        ));
   }
 }
 
@@ -25,6 +41,10 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Search',  style: TextStyle(color: Colors.white),));
+    return Center(
+        child: Text(
+      'Search',
+      style: TextStyle(color: Colors.white),
+    ));
   }
 }

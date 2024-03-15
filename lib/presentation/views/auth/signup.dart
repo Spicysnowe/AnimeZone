@@ -1,88 +1,66 @@
 import 'package:anime_zone/core/constants/fontFamily.dart';
 import 'package:anime_zone/core/utils/scaling.dart';
+import 'package:anime_zone/presentation/state/auth_state.dart';
+import 'package:anime_zone/presentation/state/signup_state.dart';
 import 'package:anime_zone/presentation/views/auth/cutom_form_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:anime_zone/core/constants/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUp extends StatefulWidget {
+
+
+class SignUp extends ConsumerWidget {
   const SignUp({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = ref.watch(signUpemailControllerProvider);
+    final passwordController = ref.watch(signUppasswordControllerProvider);
+    final emailFocusNode = ref.watch(signUpemailFocusNodeProvider);
+    final passwordFocusNode = ref.watch(signUppasswordFocusNodeProvider);
+    final isTextFieldFocused = ref.watch(signUpisTextFieldFocusedProvider);
 
-class _SignUpState extends State<SignUp> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
-  bool isTextFieldFocused = false;
-
-  @override
-  void initState() {
-    super.initState();
-    emailFocusNode.addListener(() {
-      if (emailFocusNode.hasFocus || passwordFocusNode.hasFocus) {
-        if (!isTextFieldFocused) {
-          setState(() {
-            isTextFieldFocused = true;
-          });
-        }
-      } else {
-        if (isTextFieldFocused) {
-          setState(() {
-            isTextFieldFocused = false;
-          });
-        }
+    void checkFocus() {
+      final isFocused = emailFocusNode.hasFocus || passwordFocusNode.hasFocus;
+      if (isFocused != isTextFieldFocused) {
+        ref.read(signUpisTextFieldFocusedProvider.notifier).state = isFocused;
       }
-    });
+    }
 
-    passwordFocusNode.addListener(() {
-      if (emailFocusNode.hasFocus || passwordFocusNode.hasFocus) {
-        if (!isTextFieldFocused) {
-          setState(() {
-            isTextFieldFocused = true;
-          });
-        }
-      } else {
-        if (isTextFieldFocused) {
-          setState(() {
-            isTextFieldFocused = false;
-          });
-        }
-      }
-    });
-  }
+    emailFocusNode.addListener(checkFocus);
+    passwordFocusNode.addListener(checkFocus);
 
-  @override
-  Widget build(BuildContext context) {
-    final double verticalPadding = isTextFieldFocused
-        ? scaleHeight(10, context)
-        : scaleHeight(24, context);
+
+final authNotifier= ref.watch(authProvider);
+
+    
+
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: black1,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: scaleWidth(24, context),
-                vertical: scaleHeight(24, context)),
-            child: Container(
-              height: scaleHeight(570, context),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: black1,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: scaleWidth(24, context),
+               vertical: scaleHeight(24, context)
+             ),
+          child: Container(
+            height: scaleHeight(570, context),
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: !isTextFieldFocused
+            child: Column(
+              mainAxisAlignment: !isTextFieldFocused
                     ? MainAxisAlignment.spaceBetween
                     : MainAxisAlignment.start,
-                children: [
-                  SizedBox(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
+                  children: [
+
+                    Container(
                         height: scaleWidth(50, context),
                         width: scaleWidth(50, context),
                         decoration: BoxDecoration(
@@ -100,31 +78,27 @@ class _SignUpState extends State<SignUp> {
                               fontSize: scaleHeight(16, context)),
                         ),
                       ),
+                    DetailsTextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      labelText: 'Enter your email',
+                      focusNode: emailFocusNode,
+                      maxLength: 30,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        bool emailValid =
+                            RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+                        if (!emailValid) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {},
+                    ),
 
-                      DetailsTextField(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        labelText: 'Enter your email',
-                        focusNode: emailFocusNode,
-                        maxLength: 30,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          bool emailValid =
-                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                  .hasMatch(value);
-
-                          if (!emailValid) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {},
-                      ),
-
-
-                      SizedBox(
+                     SizedBox(
                         height: scaleHeight(16, context),
                       ),
 
@@ -179,9 +153,14 @@ class _SignUpState extends State<SignUp> {
                       //   ),
                       // ),
 
-                      InkWell(
+                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/details');
+
+                          authNotifier.signupUserWithFirebase(emailController.text, passwordController.text, 'Aysha');
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/details',
+                              (Route<dynamic> route) => false,
+                            );
                         },
                         child: Container(
                           width: double.infinity,
@@ -206,9 +185,10 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  RichText(
+                  ],
+                ),
+
+                RichText(
                     text: TextSpan(
                       style: GoogleFonts.getFont(fontFamily1,
                           color: Colors.white,
@@ -232,19 +212,15 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                   ),
-                ],
-              ),
+                
+              ],
             ),
           ),
-        ));
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    emailFocusNode.dispose();
-    passwordFocusNode.dispose();
-    super.dispose();
+        ),
+      ),
+    );
   }
 }
+
+
+

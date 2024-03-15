@@ -2,6 +2,7 @@ import 'package:anime_zone/presentation/views/auth/details.dart';
 import 'package:anime_zone/presentation/views/auth/signin.dart';
 import 'package:anime_zone/presentation/views/auth/signup.dart';
 import 'package:anime_zone/presentation/views/navigation/bottom_navigation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -14,7 +15,9 @@ class AppRoutes {
 
 
   static Map<String, Widget Function(BuildContext)> routes = {
-    start: (context) => const SignUp(),
+    start: (context) => FirebaseAuth.instance.currentUser!=null
+    ?BottomNavigation()
+    : const SignUp(),
     signin: (context) => const SignIn(),
     details: (context) => const Deatils(),
         navigation: (context) =>  BottomNavigation(),
