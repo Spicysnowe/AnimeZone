@@ -1,4 +1,4 @@
-import 'package:anime_zone/presentation/views/auth/details.dart';
+import 'package:anime_zone/presentation/views/auth/details/details.dart';
 import 'package:anime_zone/presentation/views/auth/signin.dart';
 import 'package:anime_zone/presentation/views/auth/signup.dart';
 import 'package:anime_zone/presentation/views/navigation/bottom_navigation.dart';

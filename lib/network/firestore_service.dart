@@ -32,15 +32,17 @@ class FirestoreService extends BaseFireStoreService {
   }
 
   @override
-  Future getUserDataFromFirestore(String collectionName, String docName) async {
-    try {
-      final userData = await _firestoreInstance
-          .collection(collectionName)
-          .doc(docName)
-          .get();
-    } catch (e) {
-      print(e);
-      throw Exception(e.toString());
-    }
+  Future<Map<String, dynamic>> getUserDataFromFirestore(String collectionName, String docName) async {
+  try {
+    final userData = await FirebaseFirestore.instance
+        .collection(collectionName)
+        .doc(docName)
+        .get();
+    return userData.data() ?? {};
+  } catch (e) {
+    print(e);
+    throw Exception(e.toString());
   }
+}
+
 }

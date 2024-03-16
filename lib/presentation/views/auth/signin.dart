@@ -29,7 +29,7 @@ class SignIn extends ConsumerWidget {
 
     emailFocusNode.addListener(checkFocus);
     passwordFocusNode.addListener(checkFocus);
-    final authNotifier= ref.watch(authProvider);
+    final authNotifier = ref.watch(authProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -148,16 +148,17 @@ class SignIn extends ConsumerWidget {
 
                     InkWell(
                       onTap: () {
-                        authNotifier.loginUserWithFirebase(emailController.text, passwordController.text)
-                        .then((value) {
+                        authNotifier
+                            .loginUserWithFirebase(
+                                emailController.text, passwordController.text)
+                            .then((value) async {
+                          
 
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/navigation',
-                              (Route<dynamic> route) => false,
-                            );
-                          
+                            '/navigation',
+                            (Route<dynamic> route) => false,
+                          );
                         });
-                        
                       },
                       child: Container(
                         width: double.infinity,

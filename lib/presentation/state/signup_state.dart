@@ -13,3 +13,15 @@ final signInpasswordControllerProvider = Provider.autoDispose((ref) => TextEditi
 final signInemailFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
 final signInpasswordFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
 final signInisTextFieldFocusedProvider = StateProvider.autoDispose((ref) => false);
+
+
+
+final userNameControllerProvider = Provider.autoDispose((ref) => TextEditingController());
+final nameControllerProvider = Provider.autoDispose((ref) => TextEditingController());
+final dobControllerProvider = Provider.autoDispose((ref) => TextEditingController());
+final genderControllerProvider = Provider.autoDispose((ref) => TextEditingController());
+final usernameFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
+final nameFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
+final dobFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
+final gendereFocusNodeProvider = Provider.autoDispose((ref) => FocusNode());
+final detailsSet1isTextFieldFocusedProvider = StateProvider.autoDispose((ref) => false);

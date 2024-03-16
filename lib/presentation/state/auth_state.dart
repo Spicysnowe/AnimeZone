@@ -1,3 +1,4 @@
+import 'package:anime_zone/data/data_sources/local/database_helper.dart';
 import 'package:anime_zone/network/firebase_auth.dart';
 import 'package:anime_zone/network/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +21,12 @@ class AuthProvider extends ChangeNotifier {
     setLoader(true);
     try {
       _userCredential = await fauth.loginUserWithFirebase(email, password);
+     String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    if (userId.isNotEmpty) {
+      Map<String, dynamic> firestoreUserData = await fstore.getUserDataFromFirestore('users', userId);
+      DatabaseHelper.instance.ensureUserTableExistsAndPopulated(userId, firestoreUserData);
+    }
+
       setLoader(false);
       return _userCredential!;
     } catch (e) {
@@ -30,16 +37,15 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<UserCredential> signupUserWithFirebase(
-      String email, String password, String name) async {
+      String email, String password, ) async {
     var isSuccess = false;
     setLoader(true);
-    _userCredential = await fauth.signupUserWithFirebase(email, password, name);
+    _userCredential = await fauth.signupUserWithFirebase(email, password);
+    
     final data = {
       'uid': _userCredential!.user!.uid,
       'createdAt': DateTime.now().millisecondsSinceEpoch.toString(),
       'email': email,
-      // 'password': password,
-
       'name': '',
       'username': '',
       'dateOfBirth': '',
@@ -67,6 +73,42 @@ class AuthProvider extends ChangeNotifier {
     }
     return value;
   }
+
+  Future<bool> updateUserDetails(
+     String name,  String username, String dob, String gender, ) async {
+    var isSuccess = false;
+    setLoader(true);
+    
+    final data = {
+      'name': name,
+      'username': username,
+      'dateOfBirth': dob,
+      'gender': gender
+    };
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    isSuccess = await updateUserDetailsInDatabase(data, 'users', userId);
+    if (isSuccess) {
+      return true;
+    } else {
+      throw Exception("Error to sign up the user");
+    }
+  }
+
+
+  Future<bool> updateUserDetailsInDatabase(
+      Map<String, dynamic> data, String collectionName, String docName) async {
+    var value = false;
+    try {
+      await fstore.updateDataToFirestore(data, collectionName, docName);
+      value = true;
+    } catch (e) {
+      print(e);
+
+      value = false;
+    }
+    return value;
+  }
+
 
   void logoutUser() {
     fauth.signOutUser();

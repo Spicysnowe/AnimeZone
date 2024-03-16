@@ -1,30 +1,24 @@
+import 'package:anime_zone/data/data_sources/local/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anime_zone/core/constants/colors.dart';
 import 'package:anime_zone/core/utils/scaling.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final hasEmptyFieldsProvider = FutureProvider<bool>((ref) async {
   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
   if (userId.isEmpty) return false;
 
-  DocumentSnapshot documentSnapshot =
-      await FirebaseFirestore.instance.collection('users').doc(userId).get();
+  final dbHelper = DatabaseHelper.instance;
 
-  Map<String, dynamic>? documentData =
-      documentSnapshot.data() as Map<String, dynamic>?;
+  bool hasEmptyFields = await dbHelper.checkForEmptyFields(userId);
 
-  if (documentData == null) return false;
-
-  return documentData.values.any((value) => value == "");
+  return hasEmptyFields;
 });
 
 class SplashScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     ref.listen<AsyncValue<bool>>(hasEmptyFieldsProvider, (_, state) {
       state.when(
         data: (bool hasEmpty) async {

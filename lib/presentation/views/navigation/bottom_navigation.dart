@@ -19,50 +19,52 @@ class BottomNavigation extends ConsumerWidget {
    //TODO: Add will popscope
     return Scaffold(
       backgroundColor: black1,
-      body: Column(
-        children: [
-          Expanded(
-            flex: 9,
-            child: Center(
-              child: widgetOptions.elementAt(currentIndex),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: Center(
+                child: widgetOptions.elementAt(currentIndex),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                NavButton(
-                  onTap: () => ref
-                      .read(bottomNavigationProvider.notifier)
-                      .changeIndex(0),
-                  iconDataActive: Icons.home,
-                  iconDataInActive: Icons.home_outlined,
-                  index: 0,
-                  currentIndex: currentIndex,
-                ),
-                NavButton(
-                  onTap: () => ref
-                      .read(bottomNavigationProvider.notifier)
-                      .changeIndex(1),
-                  iconDataActive: Icons.search,
-                  iconDataInActive: Icons.search_off,
-                  index: 1,
-                  currentIndex: currentIndex,
-                ),
-                NavButton(
-                  onTap: () => ref
-                      .read(bottomNavigationProvider.notifier)
-                      .changeIndex(2),
-                  iconDataActive: Icons.person,
-                  iconDataInActive: Icons.person_outline,
-                  index: 2,
-                  currentIndex: currentIndex,
-                )
-              ],
-            ),
-          )
-        ],
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  NavButton(
+                    onTap: () => ref
+                        .read(bottomNavigationProvider.notifier)
+                        .changeIndex(0),
+                    iconDataActive: Icons.home,
+                    iconDataInActive: Icons.home_outlined,
+                    index: 0,
+                    currentIndex: currentIndex,
+                  ),
+                  NavButton(
+                    onTap: () => ref
+                        .read(bottomNavigationProvider.notifier)
+                        .changeIndex(1),
+                    iconDataActive: Icons.search,
+                    iconDataInActive: Icons.search_off,
+                    index: 1,
+                    currentIndex: currentIndex,
+                  ),
+                  NavButton(
+                    onTap: () => ref
+                        .read(bottomNavigationProvider.notifier)
+                        .changeIndex(2),
+                    iconDataActive: Icons.person,
+                    iconDataInActive: Icons.person_outline,
+                    index: 2,
+                    currentIndex: currentIndex,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
